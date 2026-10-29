@@ -1,5 +1,6 @@
 package com.banking.banking_transaction_system.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Account {
     private Long id;
 
     // Unique bank account number.
+    @Column(unique = true, nullable = false)
     private String accountNumber;
 
     // Name of the customer who owns the account.
@@ -29,6 +31,7 @@ public class Account {
 
     // Account balance.
     // BigDecimal is preferred for money instead of double/float.
+    @Column(precision = 19, scale = 2, nullable = false)
     private BigDecimal balance;
 
     // Account status, for example ACTIVE or BLOCKED.

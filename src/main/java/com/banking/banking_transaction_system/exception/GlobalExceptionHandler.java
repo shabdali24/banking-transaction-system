@@ -3,6 +3,7 @@ package com.banking.banking_transaction_system.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -41,4 +42,16 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errors);
     }
+
+    // Handles database-level unique constraint violations.
+// This protects us if two requests try to create the same account
+// at nearly the same time.
+@ExceptionHandler(DataIntegrityViolationException.class)
+public ResponseEntity<String> handleDataIntegrityViolation(
+        DataIntegrityViolationException exception) {
+
+    return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body("Account number already exists");
+}
 }

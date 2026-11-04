@@ -4,6 +4,7 @@ import com.banking.banking_transaction_system.dto.AccountRequest;
 import com.banking.banking_transaction_system.dto.AccountResponse;
 import com.banking.banking_transaction_system.entity.Account;
 import com.banking.banking_transaction_system.exception.AccountAlreadyExistsException;
+import com.banking.banking_transaction_system.exception.AccountNotFoundException;
 import com.banking.banking_transaction_system.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,4 +59,20 @@ public class AccountService {
                 savedAccount.getStatus()
         );
     }
+        @Transactional(readOnly = true)
+    public AccountResponse getAccountById(Long id){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        return new AccountResponse(
+                account.getId(),
+                account.getAccountNumber(),
+                account.getCustomerName(),
+                account.getEmail(),
+                account.getBalance(),
+                account.getStatus()
+        );
+    
+    }
+
+    
 }

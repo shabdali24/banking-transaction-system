@@ -39,4 +39,11 @@ public class AccountController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
+    // Handles GET /api/accounts/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<AccountResponse> getAccountById(
+    @PathVariable Long id) {
+     AccountResponse response = accountService.getAccountById(id);
+     return ResponseEntity.ok(response);
+    }
 }

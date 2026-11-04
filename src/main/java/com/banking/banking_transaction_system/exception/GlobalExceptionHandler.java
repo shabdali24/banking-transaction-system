@@ -7,12 +7,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
+
 import java.util.HashMap;
 import java.util.Map;
 
 // Handles exceptions globally for all REST controllers.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+     
 
     // Handles duplicate account numbers.
     @ExceptionHandler(AccountAlreadyExistsException.class)
@@ -54,4 +58,13 @@ public ResponseEntity<String> handleDataIntegrityViolation(
             .status(HttpStatus.CONFLICT)
             .body("Account number already exists");
 }
+
+@ExceptionHandler(AccountNotFoundException.class)
+public ResponseEntity<String> handleAccountNotFound(
+        AccountNotFoundException exception) {
+
+    return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(exception.getMessage());
+        }
 }
